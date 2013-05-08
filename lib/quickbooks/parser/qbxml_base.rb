@@ -6,15 +6,16 @@ class Quickbooks::Parser::QbxmlBase
 
   QBXML_BASE = Quickbooks::Parser::QbxmlBase
 
-  FLOAT_CAST = Proc.new {|d| d ? Float(d) : 0.0}                                  
-  BOOL_CAST  = Proc.new {|d| d ? (d == 'True' ? true : false) : false }          
+  FLOAT_CAST = Proc.new {|d| d ? Float(d) : 0.0}
+  MONEY_CAST = Proc.new {|d| '%.2f' % (d ? Float(d) : 0.0)}
+  BOOL_CAST  = Proc.new {|d| d ? (d == 'True' ? true : false) : false }
   DATE_CAST  = Proc.new {|d| d ? Date.parse(d).strftime("%Y-%m-%d") : Date.today.strftime("%Y-%m-%d") } 
-  TIME_CAST  = Proc.new {|d| d ? Time.parse(d).xmlschema : Time.now.xmlschema }   
-  INT_CAST   = Proc.new {|d| d ? Integer(d.to_i) : 0 }                                 
-  STR_CAST   = Proc.new {|d| d ? String(d) : ''}                                  
+  TIME_CAST  = Proc.new {|d| d ? Time.parse(d).xmlschema : Time.now.xmlschema }
+  INT_CAST   = Proc.new {|d| d ? Integer(d.to_i) : 0 }
+  STR_CAST   = Proc.new {|d| d ? String(d) : ''}
 
   QB_TYPE_CONVERSION_MAP= {
-    "AMTTYPE"          => FLOAT_CAST,
+    "AMTTYPE"          => MONEY_CAST,
     "BOOLTYPE"         => BOOL_CAST,
     "DATETIMETYPE"     => TIME_CAST,
     "DATETYPE"         => DATE_CAST,
